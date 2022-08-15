@@ -2,39 +2,62 @@
 #include <Arduino_FreeRTOS.h>
 
 // Include Cyber Ford libraries
-#include <CyberFord_TaskCreation.h>
-#include <CyberFord_Wrapper.h>
+#include <CyberFord.h>
+/*
 #include <CyberFord_RPiControl.h>
 #include <CyberFord_LightControl.h>
 #include <CyberFord_SteeringControl.h>
 #include <CyberFord_MotorControl.h>
 #include <CyberFord_Logging.h>
+*/
 
 // Prototypes of task definitions
+void TaskRPiControl( void *pvParameters );
+void TaskLightControl( void *pvParameters );
+void TaskSteeringControl( void *pvParameters );
+void TaskMotorControl( void *pvParameters );
+void TaskLogging( void *pvParameters );
 
 void setup() {
-  // Print release info
-
   // Initialize serial communication for logging
   // Logging will also be send wirelessly via SPI
+  Serial.begin(9600);
+
+  // Print release info
+  CyberFord_printReleaseInfo();
   
   // RPi control - Task creation
+  xTaskCreate( TaskRPiControl, "RPiControl", 128, NULL, 3, NULL );
   // Light control - Task creation
+  xTaskCreate( TaskLightControl, "LightControl", 128, NULL, 1, NULL );
   // Steering control - Task creation
+  xTaskCreate( TaskSteeringControl, "SteeringControl", 128, NULL, 2, NULL);
   // Motor control - Task creation
+  xTaskCreate( TaskMotorControl, "MotorControl", 128, NULL, 2, NULL );
   // Logging - Task creation
-
-  // Init RPi object
-  // Init Light control object
-  // Init Steering control object
-  // Init Motor control object
-  // Init Logging object
+  xTaskCreate( TaskLogging, "Logging", 128, NULL, 1, NULL );
 }
 
 void loop() {} // Not used, everything done in tasks
 
+
 // RPi control task definition
+void TaskRPiControl( void *pvParameters ) { 
+  for(;;);
+}
 // Light control task definition
+void TaskLightControl( void *pvParameters ) { 
+  for(;;);
+}
 // Steering control task definition
+void TaskSteeringControl( void *pvParameters ) {
+  for(;;);
+}
 // Motor control task definition
+void TaskMotorControl( void *pvParameters ) {
+  for(;;);
+}
 // Logging task definition
+void TaskLogging( void *pvParameters ) {
+  for(;;);
+}
