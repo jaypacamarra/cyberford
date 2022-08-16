@@ -3,14 +3,11 @@
 
 // Include Cyber Ford libraries
 #include <CyberFord.h>
-
-//#include <CyberFord_RPiControl.h>
+#include <CyberFord_RPiControl.h>
 #include <CyberFord_LightControl.h>
 #include <CyberFord_SteeringControl.h>
-/*
 #include <CyberFord_MotorControl.h>
 #include <CyberFord_Logging.h>
-*/
 
 // Prototypes of task definitions
 void TaskRPiControl( void *pvParameters );
@@ -44,8 +41,11 @@ void loop() {} // Not used, everything done in tasks
 // RPi control task definition
 void TaskRPiControl( void *pvParameters ) { 
   for(;;) {
-    CyberFord.setCommand(commandTurnRight);
+    CyberFord.setSpeed(180);
+    CyberFord.setCommand(commandMotorSetSpeed);
     vTaskDelay(1);
+    //CyberFord.setCommand(commandMotorSetForwardDrive);
+    //vTaskDelay(1);
   }
 }
 
@@ -68,6 +68,7 @@ void TaskSteeringControl( void *pvParameters ) {
   for(;;) {
     if(CyberFord.getCommand() == commandTurnLeft)
       CyberFord.turnLeft();
+    
     else if(CyberFord.getCommand() == commandTurnRight)
       CyberFord.turnRight();
   }
@@ -76,7 +77,14 @@ void TaskSteeringControl( void *pvParameters ) {
 // Motor control task definition
 void TaskMotorControl( void *pvParameters ) {
   for(;;) {
-    vTaskDelay(500);
+    if(CyberFord.getCommand() == commandMotorSetSpeed)
+      CyberFord.motorSpeed( CyberFord.getSpeed() );
+    
+    else if(CyberFord.getCommand() == commandMotorSetForwardDrive)
+      CyberFord.driveForward();
+    
+    else if(CyberFord.getCommand() == commandMotorSetReverseDrive)
+      CyberFord.driveReverse();
   }
 }
 
