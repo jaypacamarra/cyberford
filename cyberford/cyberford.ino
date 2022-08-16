@@ -41,8 +41,8 @@ void loop() {} // Not used, everything done in tasks
 // RPi control task definition
 void TaskRPiControl( void *pvParameters ) { 
   for(;;) {
-    CyberFord.setSpeed(180);
-    CyberFord.setCommand(commandMotorSetSpeed);
+    CyberFord.setTurnAngle(40);
+    CyberFord.setCommand(commandTurnRight);
     vTaskDelay(1);
     //CyberFord.setCommand(commandMotorSetForwardDrive);
     //vTaskDelay(1);
@@ -67,10 +67,10 @@ void TaskLightControl( void *pvParameters ) {
 void TaskSteeringControl( void *pvParameters ) {
   for(;;) {
     if(CyberFord.getCommand() == commandTurnLeft)
-      CyberFord.turnLeft();
+      CyberFord.turnLeft( CyberFord.getTurnAngle() );
     
     else if(CyberFord.getCommand() == commandTurnRight)
-      CyberFord.turnRight();
+      CyberFord.turnRight( CyberFord.getTurnAngle() );
   }
 }
 
