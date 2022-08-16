@@ -52,14 +52,17 @@ void TaskRPiControl( void *pvParameters ) {
 // Light control task definition
 void TaskLightControl( void *pvParameters ) {
   for(;;) {
-    if(CyberFord.getCommand() == commandLeftTurnSignal)
-      CyberFord.leftTurnSignal();
-    
-    else if(CyberFord.getCommand() == commandRightTurnSignal)
-      CyberFord.rightTurnSignal();
-    
-    else if(CyberFord.getCommand() == commandStopSignal)
-      CyberFord.stopSignal();
+    if(CyberFord.getCommand() == commandLeftTurnSignal) {
+      do {
+        CyberFord.leftTurnSignal();
+      }while(CyberFord.getCommand() != commandStopSignal);
+    }
+    else if(CyberFord.getCommand() == commandRightTurnSignal) {
+      do {
+        CyberFord.rightTurnSignal();
+      }while(CyberFord.getCommand() != commandStopSignal);
+    }
+    CyberFord.stopSignal();
   }
 }
 
