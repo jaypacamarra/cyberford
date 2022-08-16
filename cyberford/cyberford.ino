@@ -6,8 +6,8 @@
 
 //#include <CyberFord_RPiControl.h>
 #include <CyberFord_LightControl.h>
-/*
 #include <CyberFord_SteeringControl.h>
+/*
 #include <CyberFord_MotorControl.h>
 #include <CyberFord_Logging.h>
 */
@@ -44,7 +44,7 @@ void loop() {} // Not used, everything done in tasks
 // RPi control task definition
 void TaskRPiControl( void *pvParameters ) { 
   for(;;) {
-    CyberFord.setCommand(commandStopSignal);
+    CyberFord.setCommand(commandTurnRight);
     vTaskDelay(1);
   }
 }
@@ -66,7 +66,10 @@ void TaskLightControl( void *pvParameters ) {
 // Steering control task definition
 void TaskSteeringControl( void *pvParameters ) {
   for(;;) {
-    vTaskDelay(500);
+    if(CyberFord.getCommand() == commandTurnLeft)
+      CyberFord.turnLeft();
+    else if(CyberFord.getCommand() == commandTurnRight)
+      CyberFord.turnRight();
   }
 }
 
