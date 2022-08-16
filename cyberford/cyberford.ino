@@ -18,14 +18,13 @@ void TaskSteeringControl( void *pvParameters );
 void TaskMotorControl( void *pvParameters );
 void TaskLogging( void *pvParameters );
 
-void setup() {
-  // Initialize serial communication for logging
-  // Logging will also be send wirelessly via SPI
-  Serial.begin(9600);
+// Instantiate CyberFord object which will serve as interface for control
+cyberFord CyberFord;
 
-  // Print release info
-  CyberFord_printReleaseInfo();
-  
+void setup() {
+  // Call startup routine for the CyberFord object
+  CyberFord.startup();
+
   // RPi control - Task creation
   xTaskCreate( TaskRPiControl, "RPiControl", 128, NULL, 3, NULL );
   // Light control - Task creation
@@ -46,7 +45,7 @@ void TaskRPiControl( void *pvParameters ) {
   for(;;);
 }
 // Light control task definition
-void TaskLightControl( void *pvParameters ) { 
+void TaskLightControl( void *pvParameters ) {
   for(;;);
 }
 // Steering control task definition
