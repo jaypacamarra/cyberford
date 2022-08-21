@@ -16,6 +16,9 @@ void TaskSteeringControl( void *pvParameters );
 void TaskMotorControl( void *pvParameters );
 void TaskLogging( void *pvParameters );
 
+// Global task handle definitions
+TaskHandle_t taskNotificationHandlerRPiControl;
+
 // Instantiate CyberFord object which will serve as interface for control
 cyberFord CyberFord;
 
@@ -24,7 +27,7 @@ void setup() {
   CyberFord.startup();
 
   // RPi control - Task creation
-  xTaskCreate( TaskRPiControl, "RPiControl", 128, NULL, 3, NULL );
+  xTaskCreate( TaskRPiControl, "RPiControl", 128, NULL, 3, &taskNotificationHandlerRPiControl );
   //Light control - Task creation
   xTaskCreate( TaskLightControl, "LightControl", 128, NULL, 1, NULL );
   // Steering control - Task creation
@@ -39,13 +42,18 @@ void loop() {} // Not used, everything done in tasks
 
 
 // RPi control task definition
-void TaskRPiControl( void *pvParameters ) { 
+void TaskRPiControl( void *pvParameters ) {
+
   for(;;) {
-    CyberFord.setTurnAngle(40);
-    CyberFord.setCommand(commandTurnRight);
-    vTaskDelay(1);
-    //CyberFord.setCommand(commandMotorSetForwardDrive);
-    //vTaskDelay(1);
+    if(ulTaskNotifyTake(pdTRUE, portMAX_DELAY)) { //ulTaskNotifyTake blocks task until notification is received
+      //Parse SPI data from RPI
+
+      //Set command
+      //CyberFord.setCommand(commandTurnRight);
+
+      // Give other control tasks cpu time by blocking this task
+      vTaskDelay(3);
+    }    
   }
 }
 
