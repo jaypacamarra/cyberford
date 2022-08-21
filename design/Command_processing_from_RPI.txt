@@ -1,0 +1,29 @@
+RPI -> Arduino motor controller[AMC] (asynchronous / 10Hz)
+
+
+Sequence:
+
+1	TaskRPiControl (locked)
+2 	ISR (unlocks RPiControl)
+3	TaskRPiControl (unlocked)
+4	Parse data from SPI line
+5	Lock TaskRPiControl
+6	Back to 1
+
+byte format (for reference):
+bit7 | bit6 | bit5 | bit4 | bit3 | bit2 | bit1 | bit0
+
+RPI 8-byte command format:
+byte	0-5	6 ASCII characters in sequence that spell out "CyberF"
+byte	6	Bit7 indicates Read[0]/Write[1], bit 0-6 is the command ID
+		corresponding to the command enum defined in CyberFord.h
+byte	7	Command value ranging from 0-255	
+		
+
+Command processing requirements:
+- Arduino controller shall receive command inputs at a frequnecy of 10Hz
+- Each command shall be entered into a queue construct in the AMC software
+- Command processing on the AMC shall take no more than 50 milliseconds
+- The TaskRPiControl task shall only do its functions when the
+  interrupt unblocks the task which will process the data received via SPI
+  
