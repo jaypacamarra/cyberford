@@ -50,7 +50,7 @@ void TaskRPiControl( void *pvParameters ) {
       int nextByte = 0;
 
       //verify vehicle ID from spi data coming from RPI
-      //6 spiData bytes will need to be sent into the verifyVehicleID function
+      //6 spiData bytes will need to be sent sequentially into the verifyVehicleID function
       if(CyberFord.verifyVehicleID(spiData)) {
         readyForCommandIDAndValue = true;
       }
