@@ -60,6 +60,11 @@ void cyberFord::startup(void) {
 
 	// activate steering servo
 	initSteeringServo();
+
+	// default drive mode
+	motorSpeed(0);
+	straightenWheels();
+
 }
 
 void cyberFord::setCommand(command cmd) {
@@ -88,6 +93,10 @@ void cyberFord::rightTurnSignal(void) {
 
 void cyberFord::stopSignal(void) {
 	signalStop();
+}
+
+void cyberFord::straightenWheels(void) {
+	straightWheels();
 }
 
 void cyberFord::turnLeft(int deg) {

@@ -87,6 +87,7 @@ public:
     void leftTurnSignal(void);
     void rightTurnSignal(void);
     void stopSignal(void);
+    void straightenWheels(void);
     void turnLeft(int);
     void turnRight(int);
     void motorSpeed(int);
