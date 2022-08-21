@@ -43,16 +43,39 @@ void loop() {} // Not used, everything done in tasks
 
 // RPi control task definition
 void TaskRPiControl( void *pvParameters ) {
-
   for(;;) {
     if(ulTaskNotifyTake(pdTRUE, portMAX_DELAY)) { //ulTaskNotifyTake blocks task until notification is received
-      //Parse SPI data from RPI
+      byte spiData = SPDR;
+      bool readyForCommandIDAndValue = false;
+      int nextByte = 0;
 
-      //Set command
-      //CyberFord.setCommand(commandTurnRight);
+      //verify vehicle ID from spi data coming from RPI
+      //6 spiData bytes will need to be sent into the verifyVehicleID function
+      if(CyberFord.verifyVehicleID(spiData)) {
+        readyForCommandIDAndValue = true;
+      }
+      
+      if(readyForCommandIDAndValue) {
+        //set command ID
+        if(nextByte == 1) {
+          CyberFord.setCommand((command)spiData);
+        }
 
-      // Give other control tasks cpu time by blocking this task
-      vTaskDelay(3);
+        //set command value
+        else if(nextByte == 2) {
+          CyberFord.setCommandValue((int)spiData);
+
+          //reset flag and nextByte counter for next command
+          readyForCommandIDAndValue = false;
+          nextByte = 0;
+
+          // Give other control tasks cpu time by blocking this task
+          vTaskDelay(3);
+        }
+
+        //increment byte counter once vehicle ID is verified
+        nextByte++;
+      }
     }    
   }
 }
@@ -78,10 +101,10 @@ void TaskLightControl( void *pvParameters ) {
 void TaskSteeringControl( void *pvParameters ) {
   for(;;) {
     if(CyberFord.getCommand() == commandTurnLeft)
-      CyberFord.turnLeft( CyberFord.getTurnAngle() );
+      CyberFord.turnLeft( CyberFord.getCommandValue() );
     
     else if(CyberFord.getCommand() == commandTurnRight)
-      CyberFord.turnRight( CyberFord.getTurnAngle() );
+      CyberFord.turnRight( CyberFord.getCommandValue() );
   }
 }
 
@@ -89,7 +112,7 @@ void TaskSteeringControl( void *pvParameters ) {
 void TaskMotorControl( void *pvParameters ) {
   for(;;) {
     if(CyberFord.getCommand() == commandMotorSetSpeed)
-      CyberFord.motorSpeed( CyberFord.getSpeed() );
+      CyberFord.motorSpeed( CyberFord.getCommandValue() );
     
     else if(CyberFord.getCommand() == commandMotorSetForwardDrive)
       CyberFord.driveForward();
