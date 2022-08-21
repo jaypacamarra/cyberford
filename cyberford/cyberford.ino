@@ -69,7 +69,7 @@ void TaskRPiControl( void *pvParameters ) {
           readyForCommandIDAndValue = false;
           nextByte = 0;
 
-          // Give other control tasks cpu time by blocking this task
+          // Give other tasks cpu time by blocking this task
           vTaskDelay(3);
         }
 
