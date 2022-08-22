@@ -1,0 +1,5 @@
+{
+    "board": "arduino:avr:uno",
+    "sketch": "testing\\steering_testing.ino",
+    "port": "COM6"
+}

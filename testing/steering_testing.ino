@@ -14,6 +14,8 @@ void loop() {
     #define DOWN    (0)
     bool dir = UP;
 
+    //myservo.write(45);
+
     for(;;) {
         myservo.write(angle + i);
 
@@ -22,9 +24,9 @@ void loop() {
         else if(dir==DOWN)
             i--;
         
-        if(i==20)
+        if(i==45)
             dir=DOWN;
-        if(i=-20)
+        if(i=-45)
             dir=UP;
 
         delay(500); 
