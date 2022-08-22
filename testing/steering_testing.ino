@@ -26,7 +26,7 @@ void loop() {
         
         if(i==45)
             dir=DOWN;
-        if(i=-45)
+        if(i==-45)
             dir=UP;
 
         delay(500); 
