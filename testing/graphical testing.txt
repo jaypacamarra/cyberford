@@ -1,0 +1,5 @@
+Carla can be used to test the tesla cybertruck / cyberford
+
+control:
+RPI -> (commands via SPI) -> Arduino Uno -> (outputs via UART)
+-> Carla API

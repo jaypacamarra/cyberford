@@ -125,6 +125,6 @@ void TaskMotorControl( void *pvParameters ) {
 // Logging task definition
 void TaskLogging( void *pvParameters ) {
   for(;;) {
-    vTaskDelay(500);
+    Serial.println( CyberFord.getCommand() );
   }
 }

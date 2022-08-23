@@ -1,5 +1,5 @@
 {
     "board": "arduino:avr:uno",
-    "sketch": "testing\\steering_testing.ino",
+    "sketch": "cyberford\\cyberford.ino",
     "port": "COM6"
 }
