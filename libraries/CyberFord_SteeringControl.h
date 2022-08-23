@@ -6,7 +6,6 @@
 #include "Servo.h"
 
 void initSteeringServo(void);
-void straightWheels(void);
 void leftTurn(int);
 void rightTurn(int);
 

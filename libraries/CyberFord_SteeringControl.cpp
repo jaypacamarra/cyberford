@@ -6,6 +6,10 @@ void initSteeringServo(void) {
     myservo.attach(CYBERFORD_PIN_STEERING);
 }
 
+void straightWheels(void) {
+    myservo.write(90);
+}
+
 void leftTurn(int degree) {
     myservo.write(degree);
 }
