@@ -44,39 +44,42 @@ void loop() {} // Not used, everything done in tasks
 // RPi control task definition
 void TaskRPiControl( void *pvParameters ) {
   for(;;) {
-    if(ulTaskNotifyTake(pdTRUE, portMAX_DELAY)) { //ulTaskNotifyTake blocks task until notification is received
-      byte spiData = SPDR;
-      bool readyForCommandIDAndValue = false;
-      int nextByte = 0;
+    CyberFord.setCommand( commandLeftTurnSignal );
+    CyberFord.setCommandValue( 50 );
+    vTaskDelay(3);
+    // if(ulTaskNotifyTake(pdTRUE, portMAX_DELAY)) { //ulTaskNotifyTake blocks task until notification is received
+    //   byte spiData = SPDR;
+    //   bool readyForCommandIDAndValue = false;
+    //   int nextByte = 0;
 
-      //verify vehicle ID from spi data coming from RPI
-      //6 spiData bytes will need to be sent sequentially into the verifyVehicleID function
-      if(CyberFord.verifyVehicleID(spiData)) {
-        readyForCommandIDAndValue = true;
-      }
+    //   //verify vehicle ID from spi data coming from RPI
+    //   //6 spiData bytes will need to be sent sequentially into the verifyVehicleID function
+    //   if(CyberFord.verifyVehicleID(spiData)) {
+    //     readyForCommandIDAndValue = true;
+    //   }
       
-      if(readyForCommandIDAndValue) {
-        //set command ID
-        if(nextByte == 1) {
-          CyberFord.setCommand((command)spiData);
-        }
+    //   if(readyForCommandIDAndValue) {
+    //     //set command ID
+    //     if(nextByte == 1) {
+    //       CyberFord.setCommand((command)spiData);
+    //     }
 
-        //set command value
-        else if(nextByte == 2) {
-          CyberFord.setCommandValue((int)spiData);
+    //     //set command value
+    //     else if(nextByte == 2) {
+    //       CyberFord.setCommandValue((int)spiData);
 
-          //reset flag and nextByte counter for next command
-          readyForCommandIDAndValue = false;
-          nextByte = 0;
+    //       //reset flag and nextByte counter for next command
+    //       readyForCommandIDAndValue = false;
+    //       nextByte = 0;
 
-          // Give other tasks cpu time by blocking this task
-          vTaskDelay(3);
-        }
+    //       // Give other tasks cpu time by blocking this task
+    //       vTaskDelay(3);
+    //     }
 
-        //increment byte counter once vehicle ID is verified
-        nextByte++;
-      }
-    }    
+    //     //increment byte counter once vehicle ID is verified
+    //     nextByte++;
+    //   }
+    // }    
   }
 }
 
@@ -125,6 +128,10 @@ void TaskMotorControl( void *pvParameters ) {
 // Logging task definition
 void TaskLogging( void *pvParameters ) {
   for(;;) {
-    Serial.println( CyberFord.getCommand() );
+    Serial.print( "Command ID: " );
+    Serial.print( CyberFord.getCommand() );
+    Serial.print( "\t" );
+    Serial.print( "Command Value: " );
+    Serial.println( CyberFord.getCommandValue() );
   }
 }
