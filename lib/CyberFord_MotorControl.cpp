@@ -11,6 +11,8 @@ void taskMotorControlMain(void) {
         
         else if(cyberFord_getCommand() == commandMotorSetReverseDrive)
             reverseDrive();
+
+        vTaskDelay(5);
     }
 }
 

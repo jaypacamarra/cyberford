@@ -1,16 +1,17 @@
 #include "CyberFord_RPiControl.h"
 
 
-static int xCommandID;
-static int xCommandValue;
+static int xCommandID = commandID_unknownCommand;
+static int xCommandValue = commandValue_unknownCommand;
 static int nextByte = 0;
+static bool spiDataReceived = false;
 
 
 void taskRPiControlMain(void) {
     byte data;
 
     for(;;){
-        if( ulTaskNotifyTake(pdTRUE, portMAX_DELAY) /*Data received by SPI*/ ) {
+        if( spiDataReceived ) {
             data = SPDR;
             
             if( parseVehicleID(data) == vehicleID_cyberFord ) {
@@ -18,21 +19,20 @@ void taskRPiControlMain(void) {
                 xCommandValue = parseCommandValue(data);
             }
 
-            vTaskDelay(5);
+            spiDataReceived = false;
         }
+        else {
+            taskYIELD();
+        }
+
+        vTaskDelay(1);
     }
 }
 
 // SPI interrupt routine for SPI commands from RPi
 // Unblocks the RPI control task
-extern TaskHandle_t taskNotificationHandlerRPiControl;
-ISR (SPI_STC_vect)
-{
-    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
-    vTaskNotifyGiveFromISR(taskNotificationHandlerRPiControl, &xHigherPriorityTaskWoken);
-    if (xHigherPriorityTaskWoken) {
-        taskYIELD();    // force context switch
-    }
+ISR (SPI_STC_vect) {
+    spiDataReceived = true;
 }
 
 int parseVehicleID(int charIn) {
@@ -106,7 +106,7 @@ int parseCommandValue(int d) {
 }
 
 int cyberFord_getCommand(void) {
-    return xCommandID;
+    return xCommandID; 
 }
 
 int cyberFord_getCommandValue(void) {

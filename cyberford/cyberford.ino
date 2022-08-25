@@ -12,14 +12,12 @@ void TaskSteeringControl( void *pvParameters );
 void TaskMotorControl( void *pvParameters );
 void TaskLogging( void *pvParameters );
 
-TaskHandle_t taskNotificationHandlerRPiControl;
-
 void setup() {
     // init cyberford
     cyberFord_init();
 
     // RPi control - Task creation
-    xTaskCreate( TaskRPiControl, "RPiControl", 128, NULL, 3, &taskNotificationHandlerRPiControl );
+    xTaskCreate( TaskRPiControl, "RPiControl", 128, NULL, 3, NULL );
     //Light control - Task creation
     xTaskCreate( TaskLightControl, "LightControl", 128, NULL, 1, NULL );
     // Steering control - Task creation

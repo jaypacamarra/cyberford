@@ -11,6 +11,8 @@ void taskSteeringControlMain(void) {
         
         else if(cyberFord_getCommand() == commandTurnRight)
             rightTurn( cyberFord_getCommandValue() );
+
+        vTaskDelay(5);
     }
 }
 

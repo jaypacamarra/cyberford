@@ -40,8 +40,8 @@ enum command_e {
     commandMotorSetReverseDrive
 };
 
-void        printReleaseInfo(void);
-void        cyberFord_init(void);
+void printReleaseInfo(void);
+void cyberFord_init(void);
 
 // CyberFord class definition
 /*

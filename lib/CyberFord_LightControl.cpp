@@ -3,33 +3,31 @@
 void taskLightControlMain(void) {
     for(;;){
         if(cyberFord_getCommand() == commandLeftTurnSignal) {
-            do {
-                signalLeft;
-            }while(cyberFord_getCommand() != commandStopSignal);
+            signalLeft();
         }
         else if(cyberFord_getCommand() == commandRightTurnSignal) {
-            do {
-                signalRight;
-            }while(cyberFord_getCommand() != commandStopSignal);
+            signalRight();
         }
-        signalStop();
+        else if(cyberFord_getCommand() == commandStopSignal) {
+            signalStop();
+       }
     }
 }
 
 void signalLeft(void) {
     digitalWrite(CYBERFORD_PIN_RTURNSIG, LOW);
     digitalWrite(CYBERFORD_PIN_LTURNSIG, HIGH);
-    vTaskDelay(50);
+    vTaskDelay(BLINK_INTERVAL);
     digitalWrite(CYBERFORD_PIN_LTURNSIG, LOW);
-    vTaskDelay(50);
+    vTaskDelay(BLINK_INTERVAL);
 }
 
 void signalRight(void) {
     digitalWrite(CYBERFORD_PIN_LTURNSIG, LOW);
     digitalWrite(CYBERFORD_PIN_RTURNSIG, HIGH);
-    vTaskDelay(50);
+    vTaskDelay(BLINK_INTERVAL);
     digitalWrite(CYBERFORD_PIN_RTURNSIG, LOW);
-    vTaskDelay(50);
+    vTaskDelay(BLINK_INTERVAL);
 }
 
 void signalStop(void) {

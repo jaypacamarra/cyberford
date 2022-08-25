@@ -5,6 +5,8 @@
 #include "Arduino.h"
 #include "Arduino_FreeRTOS.h"
 
+#define BLINK_INTERVAL  50
+
 void taskLightControlMain(void);
 void signalLeft(void);
 void signalRight(void);
