@@ -106,7 +106,7 @@ int parseCommandValue(int d) {
 }
 
 int cyberFord_getCommand(void) {
-    return xCommandID; 
+    return xCommandID = commandLeftTurnSignal;
 }
 
 int cyberFord_getCommandValue(void) {

@@ -2,6 +2,7 @@
 #include "CyberFord_LightControl.h"
 void taskLoggingMain(void) {
     for(;;) {
-        vTaskDelay(50);
+        Serial.println(cyberFord_getCommand());
+        vTaskDelay(5);
     }
 }
