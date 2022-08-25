@@ -1,5 +1,21 @@
 #include "CyberFord_LightControl.h"
 
+void taskLightControlMain(void) {
+    for(;;){
+        if(cyberFord_getCommand() == commandLeftTurnSignal) {
+            do {
+                signalLeft;
+            }while(cyberFord_getCommand() != commandStopSignal);
+        }
+        else if(cyberFord_getCommand() == commandRightTurnSignal) {
+            do {
+                signalRight;
+            }while(cyberFord_getCommand() != commandStopSignal);
+        }
+        signalStop();
+    }
+}
+
 void signalLeft(void) {
     digitalWrite(CYBERFORD_PIN_RTURNSIG, LOW);
     digitalWrite(CYBERFORD_PIN_LTURNSIG, HIGH);

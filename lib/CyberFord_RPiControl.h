@@ -5,7 +5,9 @@
 #include "Arduino.h"
 #include "CyberFord.h"
 
-#define vehicleID_unknownVehicle    (0x0)
+#define commandID_unknownCommand    (-1)
+#define commandValue_unknownCommand (-1)
+#define vehicleID_unknownVehicle    (-1)
 #define vehicleID_cyberFord         (0x1)
 
 // structure for grouping SPI data after bit math
@@ -14,8 +16,11 @@ typedef struct RPiControlStruct {
     int commandValue;
 } structInstanceRPiControl;
 
+void taskRPiControlMain(void);
 int parseVehicleID(int);
 int parseCommandID(int);
 int parseCommandValue(int);
+int cyberFord_getCommand(void);
+int cyberFord_getCommandValue(void);
 
 #endif

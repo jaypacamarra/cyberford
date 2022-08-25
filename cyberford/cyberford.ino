@@ -1,4 +1,9 @@
 #include <Arduino_FreeRTOS.h>
+#include <CyberFord_Logging.h>
+#include <CyberFord_MotorControl.h>
+#include <CyberFord_LightControl.h>
+#include <CyberFord_RPiControl.h>
+#include <CyberFord_SteeringControl.h>
 
 // Prototypes of task definitions
 void TaskRPiControl( void *pvParameters );
@@ -7,13 +12,14 @@ void TaskSteeringControl( void *pvParameters );
 void TaskMotorControl( void *pvParameters );
 void TaskLogging( void *pvParameters );
 
+TaskHandle_t taskNotificationHandlerRPiControl;
+
 void setup() {
-    pinMode(7, OUTPUT);
-    pinMode(4, OUTPUT);
-    pinMode(5, OUTPUT);
+    // init cyberford
+    cyberFord_init();
 
     // RPi control - Task creation
-    xTaskCreate( TaskRPiControl, "RPiControl", 128, NULL, 3, NULL );
+    xTaskCreate( TaskRPiControl, "RPiControl", 128, NULL, 3, &taskNotificationHandlerRPiControl );
     //Light control - Task creation
     xTaskCreate( TaskLightControl, "LightControl", 128, NULL, 1, NULL );
     // Steering control - Task creation
@@ -23,31 +29,26 @@ void setup() {
     // Logging - Task creation
     xTaskCreate( TaskLogging, "Logging", 128, NULL, 1, NULL );
 
-    vTaskStartScheduler();
-
 }
 
-void loop()
-
-{
-
-}
+void loop() {}
 
 void TaskRPiControl( void *pvParameters ) {
-    for(;;){
-        digitalWrite(5, LOW);
-        vTaskDelay(2);
-    }
+    taskRPiControlMain();
 }
+
 void TaskLightControl( void *pvParameters ) {
-    taskYIELD();
+    taskLightControlMain();
 }
+
 void TaskSteeringControl( void *pvParameters ) {
-    taskYIELD();
+    taskSteeringControlMain();
 }
+
 void TaskMotorControl( void *pvParameters ) {
-    taskYIELD();
+    taskMotorControlMain();
 }
+    
 void TaskLogging( void *pvParameters ) {
-    taskYIELD();
+    taskLoggingMain();
 }

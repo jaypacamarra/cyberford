@@ -14,10 +14,9 @@ byte format (for reference):
 bit7 | bit6 | bit5 | bit4 | bit3 | bit2 | bit1 | bit0
 
 RPI 8-byte command format:
-byte	0-5	6 ASCII characters in sequence that spell out "CyberF"
-byte	6	Bit7 indicates Read[0]/Write[1], bit 0-6 is the command ID
-		corresponding to the command enum defined in CyberFord.h
-byte	7	Command value ranging from 0-255	
+byte	0-5	  6 ASCII characters in sequence that spell out "CyberF"
+byte	6	    the command ID corresponding to the command enum defined in CyberFord.h
+byte	7	    Command value ranging from 0-255	
 		
 
 Command processing requirements:

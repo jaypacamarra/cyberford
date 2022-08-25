@@ -5,7 +5,7 @@
 #include "CyberFord.h"
 #include "Servo.h"
 
-void initSteeringServo(void);
+void taskSteeringControlMain(void);
 void leftTurn(int);
 void rightTurn(int);
 

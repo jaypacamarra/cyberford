@@ -3,6 +3,7 @@
 
 #include "CyberFord.h"
 
+void taskMotorControlMain(void);
 void setMotorSpeed(int);
 void forwardDrive(void);
 void reverseDrive(void);

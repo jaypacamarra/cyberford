@@ -2,13 +2,13 @@
 #define CYBERFORD_H
 
 #include "Arduino.h"
-#include "SPI.h"
-#include "String.h"
-#include "CyberFord_LightControl.h"
-#include "CyberFord_SteeringControl.h"
-#include "CyberFord_MotorControl.h"
-#include "CyberFord_RPiControl.h"
-#include "CyberFord_Logging.h"
+#include "Arduino_FreeRTOS.h"
+#include <SPI.h>
+#include <CyberFord_Logging.h>
+#include <CyberFord_MotorControl.h>
+#include <CyberFord_LightControl.h>
+#include <CyberFord_RPiControl.h>
+#include <CyberFord_SteeringControl.h>
 
 #define SOFTWARE_VER	"0.0.0"		// Update on software version release. Do not remove quotations.
 #define BAUD_RATE_BPS   115200UL
@@ -29,7 +29,7 @@
 #define CYBERFORD_PIN_RPI_SCK       13
 
 // enum definitions for all possible commands to the CyberFord
-enum command {
+enum command_e {
     commandLeftTurnSignal,
     commandRightTurnSignal,
     commandStopSignal,
@@ -39,6 +39,9 @@ enum command {
     commandMotorSetForwardDrive,
     commandMotorSetReverseDrive
 };
+
+void        printReleaseInfo(void);
+void        cyberFord_init(void);
 
 // CyberFord class definition
 /*
@@ -62,41 +65,41 @@ enum command {
         getCommand
         log
 */
-class cyberFord {
-private:
-    String softwareVer;
-    command commandID;
-    int commandValue;
-    unsigned long baudRate;
-    int state;
-    int speedSetpoint;
-    int turnAngle;
+// class cyberFord {
+// private:
+//     String softwareVer;
+//     command commandID;
+//     int commandValue;
+//     unsigned long baudRate;
+//     int state;
+//     int speedSetpoint;
+//     int turnAngle;
     
-    void setSoftwareVer();
-    void setBaudRate();
+//     void setSoftwareVer();
+//     void setBaudRate();
 
-public:
-    String getSoftwareVer(void);
-    void setCommand(command); 
-    command getCommand(void);
-    void setCommandValue(int);
-    int getCommandValue(void);
-    void printReleaseInfo(void);
-    void startup(void);
-    unsigned long getBaudRate(void);
-    void leftTurnSignal(void);
-    void rightTurnSignal(void);
-    void stopSignal(void);
-    void turnLeft(int);
-    void turnRight(int);
-    void motorSpeed(int);
-    void driveForward(void);
-    void driveReverse(void);
-    int getSpeed(void);
-    void setSpeed(int);
-    void setTurnAngle(int);
-    int getTurnAngle(void);
-    int verifyVehicleID(byte);
-};
+// public:
+//     String getSoftwareVer(void);
+//     void setCommand(command); 
+//     command getCommand(void);
+//     void setCommandValue(int);
+//     int getCommandValue(void);
+//     void printReleaseInfo(void);
+//     void startup(void);
+//     unsigned long getBaudRate(void);
+//     void leftTurnSignal(void);
+//     void rightTurnSignal(void);
+//     void stopSignal(void);
+//     void turnLeft(int);
+//     void turnRight(int);
+//     void motorSpeed(int);
+//     void driveForward(void);
+//     void driveReverse(void);
+//     int getSpeed(void);
+//     void setSpeed(int);
+//     void setTurnAngle(int);
+//     int getTurnAngle(void);
+//     int verifyVehicleID(byte);
+// };
 
 #endif
