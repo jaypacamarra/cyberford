@@ -17,9 +17,6 @@ typedef struct RPiControlStruct {
 } structInstanceRPiControl;
 
 void taskRPiControlMain(void);
-int parseVehicleID(int);
-int parseCommandID(int);
-int parseCommandValue(int);
 int cyberFord_getCommand(void);
 int cyberFord_getCommandValue(void);
 

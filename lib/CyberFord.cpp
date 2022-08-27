@@ -36,7 +36,13 @@ void cyberFord_init(void) {
 	pinMode(CYBERFORD_PIN_MOTORDIRB, OUTPUT);
 
 	// Configure SPI pins 10(SS), 11(MOSI), 12(MISO), 13(SCK)
-	pinMode(CYBERFORD_PIN_RPI_SS, OUTPUT);
-	SPI.begin();
+	pinMode(CYBERFORD_PIN_RPI_SS, INPUT_PULLUP);
+    pinMode(CYBERFORD_PIN_RPI_MISO, OUTPUT);
+    // setup SPI peripheral so that arduino is a slave
+    SPCR |= _BV(SPE);
+    // turn on interrupts
+    SPCR |= _BV(SPIE);
+  
+    SPI.beginTransaction(SPISettings(4000000, MSBFIRST, SPI_MODE0));
 	SPI.attachInterrupt();
 }

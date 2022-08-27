@@ -29,7 +29,7 @@ void setup() {
 
 }
 
-void loop() {}
+void loop() {}  // empty, everything done in tasks
 
 void TaskRPiControl( void *pvParameters ) {
     taskRPiControlMain();
