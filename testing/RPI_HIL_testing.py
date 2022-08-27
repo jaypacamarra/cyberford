@@ -5,134 +5,97 @@ spi_bus = 0
 spi_device = 0
 
 spi = spidev.SpiDev()
+
 spi.open(spi_bus, spi_device)
-spi.max_speed_hz = 1000000
 
-idx = 0
+spi.mode = 0b00
+spi.max_speed_hz = 4000000
 
-
-def spi_transfer_cyberFord_vehicleID():
-    spi.xfer2([0x43]) #'C'
-    spi.xfer2([0x79]) #'y'
-    spi.xfer2([0x62]) #'b'
-    spi.xfer2([0x65]) #'e'
-    spi.xfer2([0x72]) #'r'
-    spi.xfer2([0x46]) #'F'
 
 def exec_test_commands(cmdList, cmdInterval = 0.1):
-    for command in cmdList:
-        spi_transfer_cyberFord_vehicleID()
-        spi.xfer2([command])
-        if idx % 2 != 0:
-            time.sleep(cmdInterval) #in seconds
-        idx += 1
-        if len(cmdList) == idx+1:
-            idx = 0
-
+    for pair in cmdList:
+        spi.xfer2([pair[0]])
+        spi.xfer2([pair[1]])
+        time.sleep(cmdInterval) #in seconds 
 
 # command list
-commandLeftTurnSignal       = 0x0
-commandRightTurnSignal      = 0x1
-commandStopSignal           = 0x2
-commandTurnLeft             = 0x3
-commandTurnRight            = 0x4
-commandMotorSetSpeed        = 0x5
-commandMotorSetForwardDrive = 0x6
-commandMotorSetReverseDrive = 0x7
+commandLeftTurnSignal       = 0x00
+commandRightTurnSignal      = 0x01
+commandStopSignal           = 0x02
+commandTurnLeft             = 0x03
+commandTurnRight            = 0x04
+commandMotorSetSpeed        = 0x05
+commandMotorSetForwardDrive = 0x06
+commandMotorSetReverseDrive = 0x07
 
 # Steering test
 test_steering = [
-    commandTurnLeft,
-    0x15,
-    commandTurnLeft,
-    0x30,
-    commandTurnLeft,
-    0x45,
-    commandTurnLeft,
-    0x60,
-    commandTurnLeft,
-    0x0,
-    commandTurnRight,
-    0x15,
-    commandTurnRight,
-    0x30,
-    commandTurnRight,
-    0x45,
-    commandTurnRight,
-    0x60,
-    commandTurnRight,
-    0x0
+    [commandTurnLeft,15],
+    [commandTurnLeft,30],
+    [commandTurnLeft,45],
+    [commandTurnLeft,60],
+    [commandTurnLeft,0],
+    [commandTurnRight,15],
+    [commandTurnRight,30],
+    [commandTurnRight,45],
+    [commandTurnRight,60],
+    [commandTurnRight,0]
 ]
 
 # Throttle test
 test_throttle = [
-    commandMotorSetForwardDrive,
-    0x0,
-    commandMotorSetSpeed,
-    0x10,
-    commandMotorSetSpeed,
-    0x20,
-    commandMotorSetSpeed,
-    0x30,
-    commandMotorSetSpeed,
-    0x40,
-    commandMotorSetSpeed,
-    0x50,
-    commandMotorSetSpeed,
-    0x60,
-    commandMotorSetSpeed,
-    0x70,
-    commandMotorSetSpeed,
-    0x80,
-    commandMotorSetSpeed,
-    0x90,
-    commandMotorSetSpeed,
-    0x100,
-    commandMotorSetReverseDrive,
-    0x0        
+    [commandMotorSetForwardDrive,0],
+    [commandMotorSetSpeed,10],
+    [commandMotorSetSpeed,20],
+    [commandMotorSetSpeed,30],
+    [commandMotorSetSpeed,40],
+    [commandMotorSetSpeed,50],
+    [commandMotorSetSpeed,60],
+    [commandMotorSetSpeed,70],
+    [commandMotorSetSpeed,80],
+    [commandMotorSetSpeed,90],
+    [commandMotorSetSpeed,100],
+    [commandMotorSetReverseDrive,0]        
 ]
 
 # Steering + Throttle test
 test_throttleAndsteering = [
-    commandMotorSetForwardDrive,
-    0x0,
-    commandMotorSetSpeed,
-    0x50,
-    commandTurnLeft,
-    0x15,
-    commandTurnLeft,
-    0x45,
-    commandTurnRight,
-    0x15,
-    commandTurnRight,
-    0x45,
-    commandTurnRight,
-    0x0,
-    commandMotorSetReverseDrive,
-    0x0,
-    commandMotorSetSpeed,
-    0x0
+    [commandMotorSetForwardDrive,0],
+    [commandMotorSetSpeed,50],
+    [commandTurnLeft,15],
+    [commandTurnLeft,45],
+    [commandTurnRight,15],
+    [commandTurnRight,45],
+    [commandTurnRight,0],
+    [commandMotorSetReverseDrive,0],
+    [commandMotorSetSpeed,0]
 ]
 
 # turn signal test
 test_turnSignals = [
-    commandLeftTurnSignal,
-    0x0,
-    commandRightTurnSignal,
-    0x0,
-    commandLeftTurnSignal,
-    0x0,
-    commandRightTurnSignal,
-    0x0,
-    commandStopSignal,
-    0x0
+    [commandLeftTurnSignal,0],
+    [commandRightTurnSignal,0],
+    [commandLeftTurnSignal,0],
+    [commandRightTurnSignal,0],
+    [commandStopSignal,0]
 ]
 
-# Execute test commands
-# select test command list, and interval between each command
-exec_test_commands(test_steering, 2.0)
-exec_test_commands(test_throttle, 2.0)
-exec_test_commands(test_throttleAndsteering, 2.0)
-exec_test_commands(test_turnSignals, 4.0)
+try:
+    spi.xfer2([0x0]) #need to send a dummy byte for some reason
+    
+    # Execute test commands
+    # select test command list, and interval between each command
+    #exec_test_commands(test_steering, 2.0)
+    exec_test_commands(test_throttle, 2.0)
+    #exec_test_commands(test_throttleAndsteering, 2.0)
 
+    #print("Running test_turnSignals...")
+    #exec_test_commands(test_turnSignals, 4.0)
+    
+#     spi.xfer2([0x0]) #need to send a dummy byte for some reason
+#     spi.xfer2([commandMotorSetSpeed])
+#     spi.xfer2([45])
+
+finally:
+    spi.close()
 
