@@ -6,7 +6,7 @@ Sequence:
 1	TaskRPiControl (locked)
 2 	ISR (unlocks RPiControl)
 3	TaskRPiControl (unlocked)
-4	Parse data from SPI line
+4	save command ID and value
 5	Lock TaskRPiControl
 6	Back to 1
 
@@ -14,15 +14,17 @@ byte format (for reference):
 bit7 | bit6 | bit5 | bit4 | bit3 | bit2 | bit1 | bit0
 
 RPI 8-byte command format:
-byte	0-5	  6 ASCII characters in sequence that spell out "CyberF"
-byte	6	    the command ID corresponding to the command enum defined in CyberFord.h
-byte	7	    Command value ranging from 0-255	
+byte	0	    the command ID corresponding to the command enum defined in CyberFord.h
+byte	1	    Command value ranging from 0-255	
 		
 
 Command processing requirements:
 - Arduino controller shall receive command inputs at a frequnecy of 10Hz
-- Each command shall be entered into a queue construct in the AMC software
-- Command processing on the AMC shall take no more than 50 milliseconds
 - The TaskRPiControl task shall only do its functions when the
   interrupt unblocks the task which will process the data received via SPI
+- Light control task takes no more than 5 milliseconds
+- Logging task takes no more than 10 milliseconds
+- Motor control task takes no more than 5 milliseconds
+- RPi control task takes no more than 1 milliseconds
+- Steering control task takes no more than 2 milliseconds
   

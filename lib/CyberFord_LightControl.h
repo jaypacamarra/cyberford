@@ -8,6 +8,8 @@
 #define BLINK_INTERVAL  50
 
 void taskLightControlMain(void);
+void reverseLightOFF(void);
+void reverseLightON(void);
 void signalLeft(void);
 void signalRight(void);
 void signalStop(void);
