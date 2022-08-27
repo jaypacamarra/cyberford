@@ -27,8 +27,8 @@ ISR (SPI_STC_vect) {
 void taskRPiControlMain(void) {
     for(;;){
         if( commandReadyToProcess ) {
-            xCommandID = databuff[1];
-            xCommandValue = databuff[0];
+            xCommandID = databuff[0];
+            xCommandValue = databuff[1];
 
             commandReadyToProcess = false;
         }
