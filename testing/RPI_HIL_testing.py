@@ -16,7 +16,8 @@ def exec_test_commands(cmdList, cmdInterval = 0.1):
     for pair in cmdList:
         spi.xfer2([pair[0]])
         spi.xfer2([pair[1]])
-        time.sleep(cmdInterval) #in seconds 
+        time.sleep(cmdInterval) #in seconds
+    print("Test complete")
 
 # command list
 commandLeftTurnSignal       = 0x00
@@ -45,6 +46,7 @@ test_steering = [
 # Throttle test
 test_throttle = [
     [commandMotorSetForwardDrive,0],
+    [commandMotorSetSpeed,0],
     [commandMotorSetSpeed,10],
     [commandMotorSetSpeed,20],
     [commandMotorSetSpeed,30],
@@ -55,7 +57,18 @@ test_throttle = [
     [commandMotorSetSpeed,80],
     [commandMotorSetSpeed,90],
     [commandMotorSetSpeed,100],
-    [commandMotorSetReverseDrive,0]        
+    [commandMotorSetSpeed,90],
+    [commandMotorSetSpeed,80],
+    [commandMotorSetSpeed,70],
+    [commandMotorSetSpeed,60],
+    [commandMotorSetSpeed,50],
+    [commandMotorSetSpeed,40],
+    [commandMotorSetSpeed,30],
+    [commandMotorSetSpeed,20],
+    [commandMotorSetSpeed,10],
+    [commandMotorSetSpeed,0],
+    [commandMotorSetReverseDrive,0],
+    [commandMotorSetForwardDrive,0]
 ]
 
 # Steering + Throttle test
@@ -68,7 +81,8 @@ test_throttleAndsteering = [
     [commandTurnRight,45],
     [commandTurnRight,0],
     [commandMotorSetReverseDrive,0],
-    [commandMotorSetSpeed,0]
+    [commandMotorSetSpeed,0],
+    [commandMotorSetForwardDrive,0],
 ]
 
 # turn signal test
@@ -80,21 +94,26 @@ test_turnSignals = [
     [commandStopSignal,0]
 ]
 
-try:
-    spi.xfer2([0x0]) #need to send a dummy byte for some reason
-    
+
+#spi.xfer2([0x0]) #need to send a dummy byte for some reason
+#time.sleep(0.1)
+
+
+try:        
     # Execute test commands
     # select test command list, and interval between each command
-    #exec_test_commands(test_steering, 2.0)
-    exec_test_commands(test_throttle, 2.0)
-    #exec_test_commands(test_throttleAndsteering, 2.0)
-
-    #print("Running test_turnSignals...")
-    #exec_test_commands(test_turnSignals, 4.0)
     
-#     spi.xfer2([0x0]) #need to send a dummy byte for some reason
-#     spi.xfer2([commandMotorSetSpeed])
-#     spi.xfer2([45])
+    print("Running test_steering...")
+    exec_test_commands(test_steering, 2.0)
+    
+    print("Running test_throttle...")
+    exec_test_commands(test_throttle, 2.0)
+    
+    print("Running test_throttleAndsteering...")
+    exec_test_commands(test_throttleAndsteering, 3.0)
+
+    print("Running test_turnSignals...")
+    exec_test_commands(test_turnSignals, 5.0)
 
 finally:
     spi.close()
