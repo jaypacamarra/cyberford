@@ -10,7 +10,7 @@
 #include <CyberFord_RPiControl.h>
 #include <CyberFord_SteeringControl.h>
 
-#define SOFTWARE_VER	"0.0.0"		// Update on software version release. Do not remove quotations.
+#define SOFTWARE_VER	"1.0.0"		// Update on software version release. Do not remove quotations.
 #define BAUD_RATE_BPS   115200UL
 
 // Pin defines
