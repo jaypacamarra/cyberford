@@ -27,10 +27,9 @@ void cyberFord_init(void) {
 		to be initialized as outputs. Additionally, the SPI pins 11,12,13 are
 		configured automatically by calling the SPI.begin() function.
 	*/
-	pinMode(CYBERFORD_PIN_RLIMSW, INPUT_PULLUP);
-	pinMode(CYBERFORD_PIN_LLIMSW, INPUT_PULLUP);
 	pinMode(CYBERFORD_PIN_RTURNSIG, OUTPUT);
 	pinMode(CYBERFORD_PIN_LTURNSIG, OUTPUT);
+	pinMode(CYBERFORD_PIN_REVERSLIGHT, OUTPUT);
 	pinMode(CYBERFORD_PIN_BRKLIGHT, OUTPUT);
 	pinMode(CYBERFORD_PIN_MOTORDIRA, OUTPUT);
 	pinMode(CYBERFORD_PIN_MOTORDIRB, OUTPUT);
@@ -45,4 +44,13 @@ void cyberFord_init(void) {
   
     SPI.beginTransaction(SPISettings(4000000, MSBFIRST, SPI_MODE0));
 	SPI.attachInterrupt();
+
+	//Default car state
+	signalStop();
+	forwardDrive();
+	setMotorSpeed(0);
+	signalStop();
+	reverseLightOFF();
+	brakeLightOFF();
+	straightWheels();
 }

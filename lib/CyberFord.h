@@ -15,11 +15,9 @@
 
 // Pin defines
 #define CYBERFORD_PIN_STEERING      9   // PWM pin
-#define CYBERFORD_PIN_RLIMSW        1   // GPIO pin
-#define CYBERFORD_PIN_LLIMSW        2   // GPIO pin
+#define CYBERFORD_PIN_REVERSLIGHT   2   // GPIO pin
 #define CYBERFORD_PIN_RTURNSIG      4   // GPIO pin
 #define CYBERFORD_PIN_LTURNSIG      5   // GPIO pin
-#define CYBERFORD_PIN_REVERSLIGHT   0   // GPIO pin
 #define CYBERFORD_PIN_BRKLIGHT      6   // GPIO pin
 #define CYBERFORD_PIN_MOTORDIRA     7   // GPIO pin
 #define CYBERFORD_PIN_MOTORDIRB     8   // GPIO pin

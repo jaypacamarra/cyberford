@@ -21,9 +21,9 @@ void straightWheels(void) {
 }
 
 void leftTurn(int degree) {
-    myservo.write(degree);
+    myservo.write(90 + degree);
 }
 
 void rightTurn(int degree) {
-    myservo.write(degree);
+    myservo.write(90 - degree);
 }
