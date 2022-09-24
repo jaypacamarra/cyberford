@@ -1,6 +1,17 @@
 import spidev
+import RPi.GPIO as GPIO
 import time
 
+
+# GPIO setup
+HIGH = True
+LOW  = False
+Arduino_reset_detect_pin = 17 # Broadcom pin 17
+GPIO.setmode(GPIO.BCM) # Broadcom pin-numbering scheme
+GPIO.setup(Arduino_reset_detect_pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+
+
+# SPI setup
 spi_bus = 0
 spi_device = 0
 
@@ -94,9 +105,10 @@ test_turnSignals = [
     [commandStopSignal,0]
 ]
 
-
-#spi.xfer2([0x0]) #need to send a dummy byte for some reason
-#time.sleep(0.1)
+#Continuously send a dummy byte until the reset detect pin on Arduino is pulled HIGH
+while GPIO.input(Arduino_reset_detect_pin) == LOW:
+    spi.xfer2([0xFF]) 
+    time.sleep(0.1)
 
 
 try:        
