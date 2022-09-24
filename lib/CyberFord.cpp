@@ -33,6 +33,11 @@ void cyberFord_init(void) {
 	pinMode(CYBERFORD_PIN_BRKLIGHT, OUTPUT);
 	pinMode(CYBERFORD_PIN_MOTORDIRA, OUTPUT);
 	pinMode(CYBERFORD_PIN_MOTORDIRB, OUTPUT);
+	
+	// This pin is HIGH when arduino receives a usable command from RPI
+	// initial pin state for reset detect is LOW
+	pinMode(CYBERFORD_PIN_RESET_DETECT, OUTPUT);
+	digitalWrite(CYBERFORD_PIN_RESET_DETECT, LOW);)
 
 	// Configure SPI pins 10(SS), 11(MOSI), 12(MISO), 13(SCK)
 	pinMode(CYBERFORD_PIN_RPI_SS, INPUT_PULLUP);

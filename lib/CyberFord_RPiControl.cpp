@@ -13,6 +13,11 @@ static bool commandReadyToProcess = false;
 // SPI interrupt routine for SPI commands from RPi
 // Unblocks the RPI control task
 ISR (SPI_STC_vect) {
+    if(0xFF == SPDR) {   // rpi ready byte received
+        i=0;
+        digitalWrite(CYBERFORD_PIN_RESET_DETECT, HIGH);     // Let Rpi know it can send actual commands now
+    }
+
     if(i == 0) {
         databuff[0] = SPDR;
         i++;
@@ -26,7 +31,7 @@ ISR (SPI_STC_vect) {
 
 void taskRPiControlMain(void) {
     for(;;){
-        if( commandReadyToProcess ) {
+        if(commandReadyToProcess) {
             xCommandID = databuff[0];
             xCommandValue = databuff[1];
 

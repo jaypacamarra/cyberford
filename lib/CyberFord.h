@@ -14,6 +14,7 @@
 #define BAUD_RATE_BPS   115200UL
 
 // Pin defines
+#define CYBERFORD_PIN_RESET_DETECT  A0  // Analog pin use as GPIO output
 #define CYBERFORD_PIN_STEERING      9   // PWM pin
 #define CYBERFORD_PIN_REVERSLIGHT   2   // GPIO pin
 #define CYBERFORD_PIN_RTURNSIG      4   // GPIO pin
