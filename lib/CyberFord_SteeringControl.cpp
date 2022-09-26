@@ -6,11 +6,17 @@ void taskSteeringControlMain(void) {
     myservo.attach(CYBERFORD_PIN_STEERING);
 
     for(;;) {
-        if(cyberFord_getCommand() == commandTurnLeft)
+        if(cyberFord_getCommand() == commandTurnLeft) {
             leftTurn( cyberFord_getCommandValue() );
+        }
         
-        else if(cyberFord_getCommand() == commandTurnRight)
+        else if(cyberFord_getCommand() == commandTurnRight) {
             rightTurn( cyberFord_getCommandValue() );
+        }
+
+        else if(cyberFord_getCommand() == commandStraightWheel) {
+            straightWheels();
+        }
 
         vTaskDelay(5);
     }

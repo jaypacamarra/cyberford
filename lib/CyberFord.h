@@ -38,6 +38,7 @@ enum command_e {
     commandMotorSetSpeed,
     commandMotorSetForwardDrive,
     commandMotorSetReverseDrive,
+    commandStraightWheel,
 };
 
 void printReleaseInfo(void);

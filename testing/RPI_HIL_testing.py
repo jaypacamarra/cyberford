@@ -31,27 +31,27 @@ def exec_test_commands(cmdList, cmdInterval = 0.1):
     print("Test complete")
 
 # command list
-commandLeftTurnSignal       = 0x00
-commandRightTurnSignal      = 0x01
-commandStopSignal           = 0x02
-commandTurnLeft             = 0x03
-commandTurnRight            = 0x04
-commandMotorSetSpeed        = 0x05
-commandMotorSetForwardDrive = 0x06
-commandMotorSetReverseDrive = 0x07
+commandLeftTurnSignal       = 0
+commandRightTurnSignal      = 1
+commandStopSignal           = 2
+commandTurnLeft             = 3
+commandTurnRight            = 4
+commandMotorSetSpeed        = 5
+commandMotorSetForwardDrive = 6
+commandMotorSetReverseDrive = 7
+commandStraightWheel        = 8
 
 # Steering test
 test_steering = [
+    [commandStraightWheel, 0],
+    [commandTurnLeft,5],
+    [commandTurnLeft,10],
     [commandTurnLeft,15],
-    [commandTurnLeft,30],
-    [commandTurnLeft,45],
-    [commandTurnLeft,60],
-    [commandTurnLeft,0],
+    [commandStraightWheel, 0],
+    [commandTurnRight,5],
+    [commandTurnRight,10],
     [commandTurnRight,15],
-    [commandTurnRight,30],
-    [commandTurnRight,45],
-    [commandTurnRight,60],
-    [commandTurnRight,0]
+    [commandStraightWheel, 0]
 ]
 
 # Throttle test
@@ -105,7 +105,7 @@ test_turnSignals = [
     [commandStopSignal,0]
 ]
 
-#Continuously send a dummy byte until the reset detect pin on Arduino is pulled HIGH
+# Continuously send a dummy byte until the reset detect pin on Arduino is pulled HIGH
 while GPIO.input(Arduino_reset_detect_pin) == LOW:
     spi.xfer2([0xFF]) 
     time.sleep(0.1)
